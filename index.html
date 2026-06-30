@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe AI</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Tic-Tac-Toe AI</h1>
+            <p class="subtitle">Challenge the Unbeatable Computer!</p>
+        </header>
+
+        <div class="game-controls">
+            <div class="player-selector">
+                <label>
+                    <input type="radio" name="player" value="X" checked>
+                    <span>Play as X (First)</span>
+                </label>
+                <label>
+                    <input type="radio" name="player" value="O">
+                    <span>Play as O (Second)</span>
+                </label>
+            </div>
+
+            <div class="difficulty-selector">
+                <label for="difficulty">Difficulty:</label>
+                <select id="difficulty">
+                    <option value="easy">Easy</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="hard">Hard (Unbeatable)</option>
+                </select>
+            </div>
+
+            <button id="reset-btn" class="btn">Reset Game</button>
+            <button id="new-game-btn" class="btn btn-secondary">New Game</button>
+        </div>
+
+        <div class="game-info">
+            <div class="status">
+                <span id="current-player">Your turn (X)</span>
+                <span id="game-status"></span>
+            </div>
+            <div class="scoreboard">
+                <div class="score">
+                    <span class="score-label">You</span>
+                    <span id="player-score" class="score-value">0</span>
+                </div>
+                <div class="score">
+                    <span class="score-label">AI</span>
+                    <span id="ai-score" class="score-value">0</span>
+                </div>
+                <div class="score">
+                    <span class="score-label">Draws</span>
+                    <span id="draw-score" class="score-value">0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-board">
+            <div class="board" id="board">
+                <div class="cell" data-index="0"></div>
+                <div class="cell" data-index="1"></div>
+                <div class="cell" data-index="2"></div>
+                <div class="cell" data-index="3"></div>
+                <div class="cell" data-index="4"></div>
+                <div class="cell" data-index="5"></div>
+                <div class="cell" data-index="6"></div>
+                <div class="cell" data-index="7"></div>
+                <div class="cell" data-index="8"></div>
+            </div>
+        </div>
+
+        <div class="game-history">
+            <h3>Game History</h3>
+            <div id="history-list" class="history-list"></div>
+        </div>
+
+        <div class="instructions">
+            <h3>How to Play</h3>
+            <ul>
+                <li>Click on any empty cell to make your move</li>
+                <li>The AI will automatically respond based on the selected difficulty</li>
+                <li>First player to get 3 in a row (horizontally, vertically, or diagonally) wins</li>
+                <li>On Hard difficulty, the AI uses the Minimax algorithm and cannot be beaten</li>
+            </ul>
+        </div>
+
+        <footer>
+            <p>Created with ❤️ | <a href="https://github.com/SahwGutGid/Tic-Tac-Toe-AI" target="_blank">View on GitHub</a></p>
+        </footer>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
