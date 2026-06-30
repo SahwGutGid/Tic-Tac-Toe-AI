@@ -3,97 +3,240 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic-Tac-Toe AI</title>
+    <title>Tic-Tac-Toe AI | Minimal</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Tic-Tac-Toe AI</h1>
-            <p class="subtitle">Challenge the Unbeatable Computer!</p>
-        </header>
-
-        <div class="game-controls">
-            <div class="player-selector">
-                <label>
-                    <input type="radio" name="player" value="X" checked>
-                    <span>Play as X (First)</span>
-                </label>
-                <label>
-                    <input type="radio" name="player" value="O">
-                    <span>Play as O (Second)</span>
-                </label>
-            </div>
-
-            <div class="difficulty-selector">
-                <label for="difficulty">Difficulty:</label>
-                <select id="difficulty">
-                    <option value="easy">Easy</option>
-                    <option value="medium" selected>Medium</option>
-                    <option value="hard">Hard (Unbeatable)</option>
-                </select>
-            </div>
-
-            <button id="reset-btn" class="btn">Reset Game</button>
-            <button id="new-game-btn" class="btn btn-secondary">New Game</button>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p>Loading...</p>
         </div>
-
-        <div class="game-info">
-            <div class="status">
-                <span id="current-player">Your turn (X)</span>
-                <span id="game-status"></span>
-            </div>
-            <div class="scoreboard">
-                <div class="score">
-                    <span class="score-label">You</span>
-                    <span id="player-score" class="score-value">0</span>
+    </div>
+    
+    <!-- Background particles -->
+    <div class="particles" id="particles"></div>
+    
+    <div class="app-container">
+        <!-- Main Menu / Game Overlay -->
+        <div class="menu-overlay" id="menu-overlay">
+            <div class="menu-content">
+                <h1 class="game-title">TIC TAC TOE</h1>
+                <p class="game-subtitle">Minimal. Satisfying. Unbeatable.</p>
+                
+                <div class="menu-options">
+                    <button class="menu-btn play-btn" id="play-btn">
+                        <span>PLAY</span>
+                    </button>
+                    <button class="menu-btn settings-btn" id="settings-btn">
+                        <span>⚙️ SETTINGS</span>
+                    </button>
+                    <button class="menu-btn stats-btn" id="stats-btn">
+                        <span>📊 STATS</span>
+                    </button>
                 </div>
-                <div class="score">
-                    <span class="score-label">AI</span>
-                    <span id="ai-score" class="score-value">0</span>
-                </div>
-                <div class="score">
-                    <span class="score-label">Draws</span>
-                    <span id="draw-score" class="score-value">0</span>
+                
+                <div class="menu-footer">
+                    <p>Level <span id="current-level">1</span> | XP <span id="current-xp">0</span>/<span id="xp-needed">100</span></p>
+                    <div class="xp-bar">
+                        <div class="xp-fill" id="xp-fill"></div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="game-board">
-            <div class="board" id="board">
-                <div class="cell" data-index="0"></div>
-                <div class="cell" data-index="1"></div>
-                <div class="cell" data-index="2"></div>
-                <div class="cell" data-index="3"></div>
-                <div class="cell" data-index="4"></div>
-                <div class="cell" data-index="5"></div>
-                <div class="cell" data-index="6"></div>
-                <div class="cell" data-index="7"></div>
-                <div class="cell" data-index="8"></div>
+        <!-- Settings Modal -->
+        <div class="modal" id="settings-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>SETTINGS</h2>
+                    <button class="close-btn" id="close-settings">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="setting-group">
+                        <label>Player Symbol</label>
+                        <div class="symbol-selector">
+                            <button class="symbol-btn active" data-symbol="X" id="symbol-x">X</button>
+                            <button class="symbol-btn" data-symbol="O" id="symbol-o">O</button>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label>Difficulty</label>
+                        <div class="difficulty-selector">
+                            <button class="difficulty-btn" data-difficulty="easy">Easy</button>
+                            <button class="difficulty-btn active" data-difficulty="medium">Medium</button>
+                            <button class="difficulty-btn" data-difficulty="hard">Hard</button>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label>Sound Effects</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="sound-toggle" checked>
+                            <span class="slider"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label>Animations</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="animation-toggle" checked>
+                            <span class="slider"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label>Theme</label>
+                        <div class="theme-selector">
+                            <button class="theme-btn active" data-theme="light">Light</button>
+                            <button class="theme-btn" data-theme="dark">Dark</button>
+                            <button class="theme-btn" data-theme="neon">Neon</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-btn save-btn" id="save-settings">SAVE</button>
+                </div>
             </div>
         </div>
 
-        <div class="game-history">
-            <h3>Game History</h3>
-            <div id="history-list" class="history-list"></div>
+        <!-- Stats Modal -->
+        <div class="modal" id="stats-modal">
+            <div class="modal-content stats-content">
+                <div class="modal-header">
+                    <h2>STATISTICS</h2>
+                    <button class="close-btn" id="close-stats">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">🏆</div>
+                            <div class="stat-value" id="total-wins">0</div>
+                            <div class="stat-label">Total Wins</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🤖</div>
+                            <div class="stat-value" id="total-losses">0</div>
+                            <div class="stat-label">Total Losses</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🤝</div>
+                            <div class="stat-value" id="total-draws">0</div>
+                            <div class="stat-label">Total Draws</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">⭐</div>
+                            <div class="stat-value" id="total-xp">0</div>
+                            <div class="stat-label">Total XP</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🎯</div>
+                            <div class="stat-value" id="current-level-stat">1</div>
+                            <div class="stat-label">Current Level</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🎮</div>
+                            <div class="stat-value" id="total-games">0</div>
+                            <div class="stat-label">Total Games</div>
+                        </div>
+                    </div>
+                    
+                    <div class="achievements">
+                        <h3>ACHIEVEMENTS</h3>
+                        <div class="achievement-list" id="achievement-list">
+                            <!-- Achievements will be populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="instructions">
-            <h3>How to Play</h3>
-            <ul>
-                <li>Click on any empty cell to make your move</li>
-                <li>The AI will automatically respond based on the selected difficulty</li>
-                <li>First player to get 3 in a row (horizontally, vertically, or diagonally) wins</li>
-                <li>On Hard difficulty, the AI uses the Minimax algorithm and cannot be beaten</li>
-            </ul>
+        <!-- Game UI -->
+        <div class="game-ui" id="game-ui">
+            <div class="game-header">
+                <button class="back-btn" id="back-btn">←</button>
+                <div class="game-info">
+                    <span class="turn-indicator" id="turn-indicator">YOUR TURN</span>
+                </div>
+                <div class="game-timer" id="game-timer">00:00</div>
+            </div>
+            
+            <div class="game-board-container">
+                <div class="game-board" id="game-board">
+                    <div class="cell" data-index="0"></div>
+                    <div class="cell" data-index="1"></div>
+                    <div class="cell" data-index="2"></div>
+                    <div class="cell" data-index="3"></div>
+                    <div class="cell" data-index="4"></div>
+                    <div class="cell" data-index="5"></div>
+                    <div class="cell" data-index="6"></div>
+                    <div class="cell" data-index="7"></div>
+                    <div class="cell" data-index="8"></div>
+                </div>
+                
+                <!-- Winning line -->
+                <svg class="winning-line" id="winning-line" width="100%" height="100%">
+                    <line class="line" id="win-line" x1="0" y1="0" x2="0" y2="0"/>
+                </svg>
+            </div>
+            
+            <div class="game-footer">
+                <div class="score-display">
+                    <div class="score-item">
+                        <span class="score-label">YOU</span>
+                        <span class="score-value" id="player-score">0</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="score-label">AI</span>
+                        <span class="score-value" id="ai-score">0</span>
+                    </div>
+                </div>
+                
+                <div class="game-actions">
+                    <button class="action-btn restart-btn" id="restart-btn" data-tooltip="Restart (R)">↻</button>
+                    <button class="action-btn undo-btn" id="undo-btn" data-tooltip="Undo (U)">↪</button>
+                    <button class="action-btn hint-btn" id="hint-btn" data-tooltip="Hint (H)">💡</button>
+                </div>
+            </div>
         </div>
 
-        <footer>
-            <p>Created with ❤️ | <a href="https://github.com/SahwGutGid/Tic-Tac-Toe-AI" target="_blank">View on GitHub</a></p>
-        </footer>
+        <!-- Game Over Modal -->
+        <div class="modal" id="game-over-modal">
+            <div class="modal-content game-over-content">
+                <div class="game-over-animation" id="game-over-animation">
+                    <div class="confetti" id="confetti"></div>
+                </div>
+                <h2 id="game-result-text">YOU WIN!</h2>
+                <p class="xp-gained" id="xp-gained">+50 XP</p>
+                <div class="level-up" id="level-up-notification" style="display: none;">
+                    <span>LEVEL UP! 🎉</span>
+                </div>
+                <div class="game-over-actions">
+                    <button class="modal-btn" id="play-again-btn">PLAY AGAIN</button>
+                    <button class="modal-btn" id="main-menu-btn">MAIN MENU</button>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <!-- Audio Generator Script -->
+    <script src="audio-generator.js"></script>
+    <!-- Main Game Script -->
     <script src="game.js"></script>
+    <!-- Initialize after load -->
+    <script>
+        window.addEventListener('load', () => {
+            const loadingScreen = document.getElementById('loading-screen');
+            setTimeout(() => {
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                }, 300);
+            }, 500);
+        });
+    </script>
 </body>
 </html>
